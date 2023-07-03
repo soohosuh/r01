@@ -1,18 +1,33 @@
-const Todo2List = ({todos, todoDel, modifyTodo}) => {
+import { useEffect, useState } from "react";
+import { getList } from "../../api/todoAPI";
 
-    console.log(todos, "dfdsf")
+const initState = {dtoList:[]}
+
+const Todo2List = ({changeView}) => {
+
+    const [data, setData] = useState(initState)
+
+    useEffect(() => {
+
+        getList().then(result => {
+            console.log(result)
+            setData(result)
+        })
+    },[])
+
 
     return ( 
-        <>Todo2 List
-         <div>
+        <div className="w-full h-[100vh] bg-sky-500">
+            <div className="text text-3xl">
+                Todo2 List
+                <button onClick={() => changeView('input')}>input</button>
+                </div>
+
             <ul>
-                {todos.map(todo => <li key={todo.sno}>{todo.tno}/{todo.title} /
-                <button onClick={() => modifyTodo(todo)}>MOD</button>/
-                <button onClick={() => todoDel(todo.sno)}>DEL</button>
-                </li>)}
+                {data.dtoList.map( todo => <li key={todo.tno}>{todo.tno} - {todo.title}</li>)}
+                
             </ul>
-         </div>
-        </>
+        </div>
      );
 }
  

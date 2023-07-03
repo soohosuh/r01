@@ -1,30 +1,28 @@
 import { useState } from "react";
-import Todo2Input from "./Todo2Input";
+import { getList } from "../../api/todoAPI";
 import Todo2List from "./Todo2List";
-import uuid from 'react-uuid';
+import Todo2Input from "./Todo2Input";
 
 const Todo2 = () => {
+    
+    const [cmd, setCmd] = useState("list")
 
-    const [todos, setTodos] = useState([])
-
-    const addTodo = (todoObj) => {
-        console.log(todoObj)
-        setTodos([...todos, {sno:uuid(), ...todoObj}])
+    const changeView = (value) => {
+        setCmd(value)
     }
 
-    const todoDel = (tno) => {
-        setTodos(todos.filter(todo => todo.sno !== tno));
-    }
+    const getView = () => {
 
-    const modifyTodo = (todo) => {
-        setTodos()
+        if(cmd === 'list'){
+            return <Todo2List changeView={changeView}></Todo2List>
+        }else if(cmd === 'input'){
+            return <Todo2Input changeView={changeView}></Todo2Input>
+        }
     }
-
+    
     return ( 
         <>
-         <Todo2Input addTodo={addTodo}></Todo2Input>
-         <Todo2List todos={todos} todoDel={todoDel} modifyTodo={modifyTodo}></Todo2List>
-         
+        {getView()}
         </>
      );
 }
